@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBooking - Your Complete Service Platform</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation Header -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-calendar-check"></i>
+                <span>SmartBooking</span>
+            </div>
+            <div class="nav-links" id="nav-links">
+                <!-- Guest Navigation -->
+                <button id="login-btn" class="nav-link">Login</button>
+                <button id="register-btn" class="nav-link">Register</button>
+                
+                <!-- Authenticated Navigation -->
+                <button id="dashboard-btn" class="nav-link hidden">Dashboard</button>
+                <button id="services-btn" class="nav-link hidden">Services</button>
+                <button id="bookings-btn" class="nav-link hidden">Bookings</button>
+                <button id="notifications-btn" class="nav-link hidden">
+                    <i class="fas fa-bell"></i>
+                    Notifications
+                    <span id="notification-badge" class="notification-badge hidden">0</span>
+                </button>
+                
+                <!-- Provider Only -->
+                <button id="my-services-btn" class="nav-link hidden">My Services</button>
+                
+                <!-- Customer Only -->
+                <button id="browse-categories-btn" class="nav-link hidden">Browse Categories</button>
+                
+                <!-- Common -->
+                <button id="profile-btn" class="nav-link hidden">Profile</button>
+                <button id="logout-btn" class="nav-link hidden">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Alert Messages -->
+        <div id="alert-container"></div>
+
+        <!-- Login Form -->
+        <div id="login-section" class="auth-section">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <h2>Welcome Back</h2>
+                    <p>Sign in to your account</p>
+                </div>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <div class="input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="login-username" name="username" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="login-password" name="password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="login-submit">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </button>
+                </form>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+                    <div class="demo-accounts">
+                        <p>Demo Accounts:</p>
+                        <div class="demo-buttons">
+                            <button class="btn btn-sm btn-secondary" onclick="fillDemoLogin('customer1', 'customer123')">Customer Demo</button>
+                            <button class="btn btn-sm btn-secondary" onclick="fillDemoLogin('provider1', 'provider123')">Provider Demo</button>
+                        </div>
+                    </div>
+                    <div class="admin-link">
+                        <a href="../admin/index.html">
+                            <i class="fas fa-shield-alt"></i>
+                            Admin Panel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Form -->
+        <div id="register-section" class="auth-section hidden">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h2>Create Account</h2>
+                    <p>Join SmartBooking today</p>
+                </div>
+                <form id="register-form" class="auth-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <div class="input-group">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="first-name" name="first_name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <div class="input-group">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="last-name" name="last_name" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div class="input-group">
+                            <i class="fas fa-at"></i>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="input-group">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-type">Account Type</label>
+                        <div class="input-group">
+                            <i class="fas fa-users"></i>
+                            <select id="user-type" name="user_type" required>
+                                <option value="">Select Account Type</option>
+                                <option value="customer">Customer</option>
+                                <option value="provider">Service Provider</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Provider-specific fields -->
+                    <div id="provider-fields" class="hidden">
+                        <div class="form-group">
+                            <label for="business-name">Business Name</label>
+                            <div class="input-group">
+                                <i class="fas fa-building"></i>
+                                <input type="text" id="business-name" name="business_name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Business Description</label>
+                            <div class="input-group">
+                                <i class="fas fa-info-circle"></i>
+                                <textarea id="description" name="description" rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <div class="input-group">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" id="location" name="location">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password-confirm">Confirm Password</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password-confirm" name="password_confirm" required>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="register-submit">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" id="show-login">Sign in here</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="main-section hidden">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h1><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                    <p id="dashboard-welcome">Welcome back!</p>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-bookings">0</h3>
+                            <p>Total Bookings</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="pending-bookings">0</h3>
+                            <p>Pending Bookings</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="completed-bookings">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card" id="revenue-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-revenue">$0</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions for Customers -->
+                <div id="customer-quick-actions" class="customer-theme hidden">
+                    <div class="service-categories">
+                        <h2>Browse Services by Category</h2>
+                        <div class="category-nav">
+                            <a href="#" class="category-card" onclick="showCategoryServices('education')">
+                                <div class="category-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <h3>Education</h3>
+                                <p>Tutoring, Online Courses, Workshops</p>
+                            </a>
+                            
+                            <a href="#" class="category-card" onclick="showCategoryServices('travel')">
+                                <div class="category-icon">
+                                    <i class="fas fa-plane"></i>
+                                </div>
+                                <h3>Travel</h3>
+                                <p>Tour Guides, Travel Planning, Transportation</p>
+                            </a>
+                            
+                            <a href="#" class="category-card" onclick="showCategoryServices('food')">
+                                <div class="category-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <h3>Food & Dining</h3>
+                                <p>Catering, Personal Chef, Cooking Classes</p>
+                            </a>
+                            
+                            <a href="#" class="category-card" onclick="showCategoryServices('beauty')">
+                                <div class="category-icon">
+                                    <i class="fas fa-spa"></i>
+                                </div>
+                                <h3>Beauty & Wellness</h3>
+                                <p>Spa Services, Beauty Treatments, Fitness</p>
+                            </a>
+                            
+                            <a href="#" class="category-card" onclick="showCategoryServices('home')">
+                                <div class="category-icon">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <h3>Home Services</h3>
+                                <p>Cleaning, Repair, Interior Design</p>
+                            </a>
+                            
+                            <a href="#" class="category-card" onclick="showCategoryServices('business')">
+                                <div class="category-icon">
+                                    <i class="fas fa-briefcase"></i>
+                                </div>
+                                <h3>Business</h3>
+                                <p>Consulting, Legal, Accounting</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions for Providers -->
+                <div id="provider-quick-actions" class="provider-theme hidden">
+                    <div class="flat-card">
+                        <h3><i class="fas fa-plus-circle"></i> Quick Actions</h3>
+                        <div class="actions-grid">
+                            <button class="btn btn-primary" onclick="showAddServiceForm()">
+                                <i class="fas fa-plus"></i>
+                                Add New Service
+                            </button>
+                            <button class="btn btn-secondary" onclick="showSection('bookings')">
+                                <i class="fas fa-calendar"></i>
+                                Manage Bookings
+                            </button>
+                            <button class="btn btn-secondary" onclick="showMyServices()">
+                                <i class="fas fa-cog"></i>
+                                My Services
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="dashboard-sections">
+                    <div class="dashboard-section-card">
+                        <h3><i class="fas fa-calendar-alt"></i> Recent Bookings</h3>
+                        <div id="recent-bookings">
+                            <p class="no-data">No recent bookings</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="showSection('bookings')">View All Bookings</button>
+                    </div>
+                    
+                    <div class="dashboard-section-card">
+                        <h3><i class="fas fa-bell"></i> Recent Notifications</h3>
+                        <div id="recent-notifications">
+                            <p class="no-data">No recent notifications</p>
+                        </div>
+                        <button class="btn btn-secondary" onclick="showSection('notifications')">View All Notifications</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category-Specific Service Pages -->
+        <div id="category-services-section" class="main-section hidden">
+            <div class="section-container">
+                <div class="section-header">
+                    <h1 id="category-title">Category Services</h1>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="showSection('dashboard')">
+                            <i class="fas fa-arrow-left"></i>
+                            Back to Dashboard
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="category-services-grid" class="services-grid">
+                    <!-- Services will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div id="services-section" class="main-section hidden">
+            <div class="section-container">
+                <div class="section-header">
+                    <h1><i class="fas fa-concierge-bell"></i> Services</h1>
+                    <div class="section-actions">
+                        <button id="new-service-btn" class="btn btn-primary hidden">
+                            <i class="fas fa-plus"></i>
+                            Add Service
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Service Filters -->
+                <div class="services-filters">
+                    <div class="filter-group">
+                        <select id="category-filter">
+                            <option value="">All Categories</option>
+                        </select>
+                        <input type="text" id="search-filter" placeholder="Search services...">
+                        <button id="apply-service-filters" class="btn btn-secondary">Apply Filters</button>
+                    </div>
+                </div>
+                
+                <!-- Services List -->
+                <div id="services-list" class="services-grid">
+                    <p class="no-data">Loading services...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bookings Section -->
+        <div id="bookings-section" class="main-section hidden">
+            <div class="section-container">
+                <div class="section-header">
+                    <h1><i class="fas fa-calendar-alt"></i> Bookings Management</h1>
+                </div>
+                
+                <div class="bookings-filters">
+                    <select id="status-filter">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <input type="date" id="date-filter">
+                    <button id="apply-booking-filters" class="btn btn-secondary">Apply Filters</button>
+                </div>
+                
+                <div id="bookings-list" class="bookings-list">
+                    <p class="no-data">Loading bookings...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notifications-section" class="main-section hidden">
+            <div class="section-container">
+                <div class="section-header">
+                    <h1><i class="fas fa-bell"></i> Notifications</h1>
+                    <div class="section-actions">
+                        <button id="mark-all-read-btn" class="btn btn-secondary">
+                            <i class="fas fa-check"></i>
+                            Mark All Read
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="notifications-list" class="notifications-list">
+                    <p class="no-data">Loading notifications...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div id="profile-section" class="main-section hidden">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">User Name</h2>
+                        <p id="profile-type" class="profile-type">Account Type</p>
+                        <span id="profile-status" class="status-badge">Status</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn btn-secondary" onclick="editProfile()">
+                            <i class="fas fa-edit"></i>
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-content">
+                    <div class="profile-section-card">
+                        <h3><i class="fas fa-user"></i> Personal Information</h3>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <label>Username:</label>
+                                <span id="profile-username">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Email:</label>
+                                <span id="profile-email">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Phone:</label>
+                                <span id="profile-phone">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Member Since:</label>
+                                <span id="profile-joined">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Profile -->
+                    <div id="customer-profile" class="profile-section-card hidden">
+                        <h3><i class="fas fa-heart"></i> Customer Information</h3>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <label>Preferred Categories:</label>
+                                <span id="preferred-categories">All Categories</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Total Bookings:</label>
+                                <span id="customer-total-bookings">0</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Favorite Services:</label>
+                                <span id="favorite-services">None yet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Provider Profile -->
+                    <div id="provider-profile" class="profile-section-card hidden">
+                        <h3><i class="fas fa-briefcase"></i> Business Information</h3>
+                        <div class="profile-details">
+                            <div class="detail-item">
+                                <label>Business Name:</label>
+                                <span id="business-name-display">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Description:</label>
+                                <span id="business-description">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Location:</label>
+                                <span id="business-location">-</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Total Services:</label>
+                                <span id="provider-total-services">0</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Total Bookings:</label>
+                                <span id="provider-total-bookings">0</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Average Rating:</label>
+                                <span id="provider-rating">No ratings yet</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Floating Action Button -->
+        <button id="customer-fab" class="customer-theme fab hidden" onclick="showQuickBooking()">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Service Modal -->
+        <div id="service-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="service-modal-title">Service Details</h3>
+                    <button class="modal-close" onclick="closeServiceModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="service-modal-body">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+                <div class="modal-footer" id="service-modal-footer">
+                    <!-- Dynamic actions will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Modal -->
+        <div id="booking-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Booking Details</h3>
+                    <button id="close-modal" class="modal-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+                <div class="modal-footer" id="modal-footer">
+                    <!-- Dynamic actions will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="loading-spinner hidden">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

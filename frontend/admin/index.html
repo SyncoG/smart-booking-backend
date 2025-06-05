@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartBooking Admin Panel</title>
+    
+    <!-- Material UI CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mui/material@5.14.20/umd/material-ui.min.css" rel="stylesheet">
+    
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    
+    <!-- Chart.js for analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Admin Panel CSS -->
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Login Section -->
+        <div id="admin-login-section" class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="admin-logo">
+                        <span class="material-icons-outlined">admin_panel_settings</span>
+                        <h1>SmartBooking</h1>
+                        <h2>Admin Panel</h2>
+                    </div>
+                </div>
+                
+                <form id="admin-login-form" class="login-form">
+                    <div class="form-group">
+                        <div class="input-container">
+                            <span class="material-icons-outlined">person</span>
+                            <input type="text" id="admin-username" name="username" placeholder="Admin Username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="input-container">
+                            <span class="material-icons-outlined">lock</span>
+                            <input type="password" id="admin-password" name="password" placeholder="Password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        <span class="material-icons-outlined">login</span>
+                        Sign In to Admin Panel
+                    </button>
+                </form>
+                
+                <div class="demo-section">
+                    <p>Demo Admin Account:</p>
+                    <button type="button" class="demo-btn" onclick="fillAdminDemo()">
+                        <span class="material-icons-outlined">account_circle</span>
+                        Use Demo Admin
+                    </button>
+                </div>
+                
+                <div class="back-link">
+                    <a href="../accounts/index.html">
+                        <span class="material-icons-outlined">arrow_back</span>
+                        Back to Customer/Provider Portal
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-dashboard" class="admin-container hidden">
+            <!-- Top App Bar -->
+            <header class="app-bar">
+                <div class="app-bar-content">
+                    <div class="app-bar-left">
+                        <button class="menu-toggle" id="menu-toggle">
+                            <span class="material-icons-outlined">menu</span>
+                        </button>
+                        <div class="app-title">
+                            <span class="material-icons-outlined">admin_panel_settings</span>
+                            <h1>SmartBooking Admin</h1>
+                        </div>
+                    </div>
+                    
+                    <div class="app-bar-right">
+                        <div class="notifications">
+                            <button class="icon-btn" id="notifications-btn">
+                                <span class="material-icons-outlined">notifications</span>
+                                <span class="notification-badge" id="admin-notification-badge">3</span>
+                            </button>
+                        </div>
+                        
+                        <div class="admin-profile">
+                            <button class="profile-btn" id="profile-btn">
+                                <span class="material-icons-outlined">account_circle</span>
+                                <span class="admin-name" id="admin-name">Admin User</span>
+                                <span class="material-icons-outlined">arrow_drop_down</span>
+                            </button>
+                            <div class="profile-menu hidden" id="profile-menu">
+                                <div class="profile-item" onclick="showAdminProfile()">
+                                    <span class="material-icons-outlined">person</span>
+                                    Profile
+                                </div>
+                                <div class="profile-item" onclick="showSettings()">
+                                    <span class="material-icons-outlined">settings</span>
+                                    Settings
+                                </div>
+                                <div class="profile-item" onclick="adminLogout()">
+                                    <span class="material-icons-outlined">logout</span>
+                                    Logout
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <div class="nav-item active" data-tab="dashboard">
+                        <span class="material-icons-outlined">dashboard</span>
+                        <span class="nav-text">Dashboard</span>
+                    </div>
+                    
+                    <div class="nav-item" data-tab="users">
+                        <span class="material-icons-outlined">people</span>
+                        <span class="nav-text">Users</span>
+                    </div>
+                    
+                    <div class="nav-item" data-tab="services">
+                        <span class="material-icons-outlined">room_service</span>
+                        <span class="nav-text">Services</span>
+                    </div>
+                    
+                    <div class="nav-item" data-tab="bookings">
+                        <span class="material-icons-outlined">event</span>
+                        <span class="nav-text">Bookings</span>
+                    </div>
+                    
+                    <div class="nav-item" data-tab="payments">
+                        <span class="material-icons-outlined">payments</span>
+                        <span class="nav-text">Payments</span>
+                    </div>
+                    
+                    <div class="nav-item" data-tab="analytics">
+                        <span class="material-icons-outlined">analytics</span>
+                        <span class="nav-text">Analytics</span>
+                    </div>
+                    
+                    <div class="nav-item" data-tab="settings">
+                        <span class="material-icons-outlined">settings</span>
+                        <span class="nav-text">Settings</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content" id="main-content">
+                <!-- Dashboard Tab -->
+                <div id="dashboard-tab" class="tab-content active">
+                    <div class="page-header">
+                        <h1>Dashboard Overview</h1>
+                        <p>Welcome to the SmartBooking Admin Panel</p>
+                    </div>
+                    
+                    <!-- Key Metrics Cards -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span class="material-icons-outlined metric-icon">people</span>
+                                <div class="metric-trend up">
+                                    <span class="material-icons-outlined">trending_up</span>
+                                    <span>+12%</span>
+                                </div>
+                            </div>
+                            <div class="metric-content">
+                                <h3 id="total-users-metric">1,245</h3>
+                                <p>Total Users</p>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span class="material-icons-outlined metric-icon">room_service</span>
+                                <div class="metric-trend up">
+                                    <span class="material-icons-outlined">trending_up</span>
+                                    <span>+8%</span>
+                                </div>
+                            </div>
+                            <div class="metric-content">
+                                <h3 id="total-services-metric">389</h3>
+                                <p>Active Services</p>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span class="material-icons-outlined metric-icon">event</span>
+                                <div class="metric-trend up">
+                                    <span class="material-icons-outlined">trending_up</span>
+                                    <span>+23%</span>
+                                </div>
+                            </div>
+                            <div class="metric-content">
+                                <h3 id="total-bookings-metric">2,156</h3>
+                                <p>Total Bookings</p>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-card">
+                            <div class="metric-header">
+                                <span class="material-icons-outlined metric-icon">attach_money</span>
+                                <div class="metric-trend up">
+                                    <span class="material-icons-outlined">trending_up</span>
+                                    <span>+15%</span>
+                                </div>
+                            </div>
+                            <div class="metric-content">
+                                <h3 id="total-revenue-metric">$47,892</h3>
+                                <p>Total Revenue</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Section -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Revenue Analytics</h3>
+                                <div class="chart-actions">
+                                    <button class="chip-btn active">Month</button>
+                                    <button class="chip-btn">Week</button>
+                                    <button class="chip-btn">Year</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="revenue-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>User Growth</h3>
+                                <div class="chart-actions">
+                                    <span class="material-icons-outlined">more_vert</span>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="users-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Activity -->
+                    <div class="recent-activity-card">
+                        <div class="card-header">
+                            <h3>Recent Activity</h3>
+                            <button class="text-btn">View All</button>
+                        </div>
+                        <div class="activity-list" id="recent-activity">
+                            <!-- Activity items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Tab -->
+                <div id="users-tab" class="tab-content">
+                    <div class="page-header">
+                        <h1>User Management</h1>
+                        <div class="page-actions">
+                            <button class="fab-btn" onclick="showCreateUserDialog()">
+                                <span class="material-icons-outlined">add</span>
+                                Add User
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="data-header">
+                            <div class="search-container">
+                                <span class="material-icons-outlined">search</span>
+                                <input type="text" placeholder="Search users..." id="users-search">
+                            </div>
+                            <div class="filter-container">
+                                <select id="user-type-filter">
+                                    <option value="">All User Types</option>
+                                    <option value="customer">Customers</option>
+                                    <option value="provider">Providers</option>
+                                    <option value="admin">Admins</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="data-table-container">
+                            <table class="data-table" id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Type</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Joined</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table-body">
+                                    <!-- User rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Tab -->
+                <div id="services-tab" class="tab-content">
+                    <div class="page-header">
+                        <h1>Service Management</h1>
+                        <div class="page-actions">
+                            <button class="fab-btn" onclick="showCreateServiceDialog()">
+                                <span class="material-icons-outlined">add</span>
+                                Add Service
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="data-header">
+                            <div class="search-container">
+                                <span class="material-icons-outlined">search</span>
+                                <input type="text" placeholder="Search services..." id="services-search">
+                            </div>
+                            <div class="filter-container">
+                                <select id="service-category-filter">
+                                    <option value="">All Categories</option>
+                                </select>
+                                <select id="service-status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="services-grid" id="services-grid">
+                            <!-- Service cards will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bookings Tab -->
+                <div id="bookings-tab" class="tab-content">
+                    <div class="page-header">
+                        <h1>Booking Management</h1>
+                        <div class="page-actions">
+                            <button class="outlined-btn">
+                                <span class="material-icons-outlined">file_download</span>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card">
+                        <div class="data-header">
+                            <div class="search-container">
+                                <span class="material-icons-outlined">search</span>
+                                <input type="text" placeholder="Search bookings..." id="bookings-search">
+                            </div>
+                            <div class="filter-container">
+                                <select id="booking-status-filter">
+                                    <option value="">All Status</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                                <input type="date" id="booking-date-filter" placeholder="Filter by date">
+                            </div>
+                        </div>
+                        
+                        <div class="data-table-container">
+                            <table class="data-table" id="bookings-table">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Customer</th>
+                                        <th>Service</th>
+                                        <th>Provider</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookings-table-body">
+                                    <!-- Booking rows will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Tab -->
+                <div id="analytics-tab" class="tab-content">
+                    <div class="page-header">
+                        <h1>Analytics & Reports</h1>
+                        <div class="page-actions">
+                            <button class="outlined-btn">
+                                <span class="material-icons-outlined">picture_as_pdf</span>
+                                Generate Report
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="analytics-grid">
+                        <div class="chart-card large">
+                            <div class="card-header">
+                                <h3>Platform Performance</h3>
+                                <div class="chart-actions">
+                                    <select>
+                                        <option>Last 30 days</option>
+                                        <option>Last 90 days</option>
+                                        <option>Last year</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="performance-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Service Categories</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categories-chart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>User Distribution</h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="user-distribution-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!-- Dialogs and Modals -->
+        <div id="user-dialog" class="dialog-overlay hidden">
+            <div class="dialog">
+                <div class="dialog-header">
+                    <h3 id="user-dialog-title">Create User</h3>
+                    <button class="icon-btn" onclick="closeUserDialog()">
+                        <span class="material-icons-outlined">close</span>
+                    </button>
+                </div>
+                <div class="dialog-content">
+                    <form id="user-form">
+                        <!-- User form fields will be here -->
+                    </form>
+                </div>
+                <div class="dialog-actions">
+                    <button class="text-btn" onclick="closeUserDialog()">Cancel</button>
+                    <button class="filled-btn" onclick="saveUser()">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading...</p>
+            </div>
+        </div>
+
+        <!-- Snackbar for notifications -->
+        <div id="snackbar" class="snackbar hidden">
+            <span id="snackbar-message"></span>
+            <button class="icon-btn" onclick="hideSnackbar()">
+                <span class="material-icons-outlined">close</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="admin-script.js"></script>
+</body>
+</html> 
